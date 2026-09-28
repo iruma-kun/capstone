@@ -1,10 +1,14 @@
 fastapi
 uvicorn
 sqlalchemy
-psycopg2-binary
 pydantic
 python-dotenv
 pandas
 numpy
 scikit-learn
-yfinance
+nltk
+beautifulsoup4
+python-multipart
+requests
+jinja2
+lxml

@@ -1,49 +1,50 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from .database import Base
 
-class UserPortfolio(Base):
-    __tablename__ = "user_portfolios"
+class AuditDocument(Base):
+    __tablename__ = "audit_documents"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    total_value = Column(Float, default=100000.0)  # Total value (assets + cash)
-    cash = Column(Float, default=100000.0)         # Uninvested cash
-    risk_tolerance = Column(String, default="moderate")  # conservative, moderate, aggressive
-    target_esg_score = Column(Float, default=70.0)  # User's target ESG rating (0-100)
-    current_esg_score = Column(Float, default=0.0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    filename = Column(String, index=True)
+    upload_date = Column(DateTime, default=datetime.utcnow)
+    status = Column(String, default="Processing")  # Processing, Completed, Failed
+    category = Column(String)  # Financial, ESG, Legal, General
+    risk_score = Column(Float, default=0.0)  # 0.0 to 10.0 (High Risk)
+    content_preview = Column(Text)
 
     # Relationships
-    assets = relationship("PortfolioAsset", back_populates="portfolio", cascade="all, delete-orphan")
-    rebalances = relationship("RebalanceLog", back_populates="portfolio", cascade="all, delete-orphan")
+    findings = relationship("ComplianceFinding", back_populates="document", cascade="all, delete-orphan")
+    report = relationship("AuditReport", back_populates="document", uselist=False, cascade="all, delete-orphan")
 
-class PortfolioAsset(Base):
-    __tablename__ = "portfolio_assets"
+class ComplianceFinding(Base):
+    __tablename__ = "compliance_findings"
 
     id = Column(Integer, primary_key=True, index=True)
-    portfolio_id = Column(Integer, ForeignKey("user_portfolios.id"))
-    ticker = Column(String, index=True)
-    shares = Column(Float, default=0.0)
-    avg_buy_price = Column(Float, default=0.0)
-    current_price = Column(Float, default=0.0)
-    esg_score = Column(Float, default=0.0)
+    document_id = Column(Integer, ForeignKey("audit_documents.id"))
+    category = Column(String)  # Finance, ESG, Legal
+    rule_id = Column(String)
+    risk_level = Column(String)  # Critical, High, Medium, Low
+    title = Column(String)
+    description = Column(Text)
+    evidence_excerpt = Column(Text)  # The specific text found in the document
+    confidence_score = Column(Float)
 
     # Relationships
-    portfolio = relationship("UserPortfolio", back_populates="assets")
+    document = relationship("AuditDocument", back_populates="findings")
 
-class RebalanceLog(Base):
-    __tablename__ = "rebalance_logs"
+class AuditReport(Base):
+    __tablename__ = "audit_reports"
 
     id = Column(Integer, primary_key=True, index=True)
-    portfolio_id = Column(Integer, ForeignKey("user_portfolios.id"))
-    timestamp = Column(DateTime, default=datetime.utcnow)
-    action_summary = Column(String)  # Description of trades made
-    old_esg_score = Column(Float)
-    new_esg_score = Column(Float)
-    old_sentiment = Column(Float)
-    new_sentiment = Column(Float)
+    document_id = Column(Integer, ForeignKey("audit_documents.id"))
+    generated_at = Column(DateTime, default=datetime.utcnow)
+    summary = Column(Text)
+    total_findings = Column(Integer, default=0)
+    critical_findings = Column(Integer, default=0)
+    high_findings = Column(Integer, default=0)
+    compliance_rating = Column(String)  # Pass, Fail, Conditional
 
     # Relationships
-    portfolio = relationship("UserPortfolio", back_populates="rebalances")
+    document = relationship("AuditDocument", back_populates="report")

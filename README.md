@@ -1,30 +1,72 @@
-# Enterprise FinTech Intelligence & Autonomous Portfolio Manager
+# Cloud-Native Automated Compliance and Audit System
 
 ## Overview
-A full-stack, cloud-deployed platform that predicts market trends and manages mock portfolios based on ESG scores and real-time news sentiment.
+
+An enterprise-grade, cloud-native AI platform designed to automatically analyze corporate documents (financial reports, legal contracts, ESG disclosures) to identify compliance risks, missing data, and inconsistencies.
+
+The system utilizes specialized NLP microservices and a serverless event-driven architecture to transform raw document uploads into structured, explainable audit reports.
+
+---
 
 ## Architecture
 
-### Machine Learning Engine
-- **Models**: LSTMs and RNNs for time-series forecasting.
-- **NLP**: Sentiment analysis on financial news and reports.
+```mermaid
+graph TD
+    User([Compliance Officer]) -- Uploads Doc --> S3[Amazon S3 Bucket]
+    S3 -- Trigger Event --> Lambda[AWS Lambda Handler]
+    Lambda -- Post Request --> API[FastAPI Compliance Gateway]
 
-### Backend
-- **Language**: Python (FastAPI)
-- **Logic**: Trading logic, API requests, portfolio management.
-- **Database**: PostgreSQL (via AWS RDS).
+    subgraph "Compliance Microservices"
+        API --> Parser[Document Parser]
+        Parser --> NLP[NLP Extraction Engine]
+        NLP --> Classify[Document Classifier]
 
-### Frontend
-- **Framework**: Next.js / Tailwind CSS
-- **Features**: Real-time dashboard, portfolio visualization, rebalancing alerts.
+        Classify --> Finance[Financial Compliance Service]
+        Classify --> ESG[ESG Compliance Service]
+        Classify --> Legal[Legal Compliance Service]
+    end
 
-### Infrastructure
-- **Cloud**: AWS (S3, RDS, Lambda, VPC)
-- **IaC**: Terraform or AWS CDK
+    Finance --> Rules[Compliance Rule Engine]
+    ESG --> Rules
+    Legal --> Rules
+
+    Rules --> Risk[Risk Scoring & Report Gen]
+    Risk --> DB[(PostgreSQL/SQLite)]
+
+    User -- Views Dashboard --> Frontend[Next.js Dashboard]
+    Frontend -- API Fetch --> API
+```
+
+---
+
+## Key Features
+
+- **Intelligent Extraction**: Automated PDF/Text processing with entity and clause identification.
+- **Microservice Compliance Engines**:
+  - **Financial**: Revenue recognition, debt-to-equity anomalies, audited statement verification.
+  - **ESG**: Greenwashing detection, carbon footprint disclosure validation.
+  - **Legal**: Jurisdiction analysis, liability cap identification, regulatory clause checking.
+- **Explainable Audits**: Risk findings are linked directly to evidence (excerpts) within the source document.
+- **Serverless Workflow**: Event-driven processing triggered on S3 uploads for massive scalability.
+
+---
 
 ## Project Structure
-- `backend/`: API and trading logic.
-- `frontend/`: User dashboard.
-- `ml_engine/`: Model training and inference scripts.
-- `infrastructure/`: Cloud infrastructure definitions.
-- `data/`: Data ingestion and processing scripts.
+
+- `backend/`: FastAPI application containing specialized compliance services.
+  - `services/`: Core logic for NLP, Risk Scoring, and Compliance checks.
+- `serverless/`: AWS Lambda handlers and infrastructure-as-code templates.
+- `frontend/`: React/Next.js dashboard for real-time audit visibility.
+- `samples/`: Example corporate reports for testing and demonstration.
+- `run_platform.sh`: One-click startup script for the local environment.
+
+---
+
+## Technology Stack
+
+- **Languages**: Python, JavaScript
+- **Backend Framework**: FastAPI, Pydantic, SQLAlchemy
+- **NLP/ML**: NLTK, Spacy/Scikit-learn, Regex-based Clause Matching
+- **Frontend**: Next.js, React, Tailwind CSS, Lucide Icons
+- **Cloud (Mocked/Compatible)**: AWS S3, AWS Lambda, API Gateway
+- **Database**: SQLite (Local Dev) / PostgreSQL (Production)

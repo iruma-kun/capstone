@@ -1,8 +1,0 @@
-tensorflow
-pandas
-numpy
-yfinance
-scikit-learn
-matplotlib
-beautifulsoup4
-requests
