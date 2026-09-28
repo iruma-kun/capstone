@@ -6,6 +6,38 @@
 
 ---
 
+## 🚀 Quick Start (Zero-Setup)
+
+### Linux / macOS
+
+```bash
+git clone <your-repo-url>
+cd Capstone
+./setup_and_run.sh
+```
+
+### Windows (PowerShell)
+
+```powershell
+git clone <your-repo-url>
+cd Capstone
+.\setup_and_run.ps1
+```
+
+**That's it!** The script automatically:
+
+1. ✅ Creates isolated `.venv` environment
+2. ✅ Installs all Python & Node.js dependencies
+3. ✅ Initializes SQLite database with schema
+4. ✅ Seeds 3 sample compliance documents (Financial, ESG, Legal)
+5. ✅ Starts FastAPI backend at **http://localhost:8000**
+6. ✅ Starts Next.js frontend at **http://localhost:3000**
+7. ✅ Opens API docs at **http://localhost:8000/docs**
+
+Press `Ctrl+C` to stop all services cleanly.
+
+---
+
 ## 1. Abstract
 
 The **Cloud-Native Automated Compliance and Audit System (CACA)** is an AI-driven platform designed to automate the labor-intensive process of auditing corporate documents. By leveraging Natural Language Processing (NLP) and an event-driven cloud architecture, the system identifies regulatory risks, financial inconsistencies, and ESG (Environmental, Social, and Governance) gaps in real-time. This project demonstrates a scalable approach to "RegTech" (Regulatory Technology) by transforming unstructured data into actionable compliance intelligence.
@@ -96,7 +128,23 @@ graph TD
 
 ---
 
-## 6. Future Work & Scalability
+## 6. Compliance Rules Implemented
+
+| Domain    | Rule ID | Check                            | Severity |
+| --------- | ------- | -------------------------------- | -------- |
+| Financial | FIN-001 | Missing Independent Auditor      | High     |
+| Financial | FIN-002 | Unverified Revenue Projections   | Medium   |
+| Financial | FIN-003 | Missing Liability Disclosures    | Critical |
+| ESG       | ESG-001 | Unverified Net-Zero (No Scope 3) | High     |
+| ESG       | ESG-002 | Vague Environmental Claims       | Medium   |
+| ESG       | ESG-003 | Missing Governance Disclosure    | Low      |
+| Legal     | LEG-001 | Missing Jurisdiction Clause      | Critical |
+| Legal     | LEG-002 | Unlimited Liability              | High     |
+| Legal     | LEG-003 | Missing Data Privacy/GDPR        | Medium   |
+
+---
+
+## 7. Future Work & Scalability
 
 - **LLM Integration**: Replacing Regex-based rules with Large Language Models (e.g., GPT-4 or Claude via Amazon Bedrock) for deeper semantic understanding.
 - **OCR (Optical Character Recognition)**: Integrating Amazon Textract to process scanned PDFs and handwritten notes.
@@ -105,22 +153,67 @@ graph TD
 
 ---
 
-## 7. Getting Started
+## 8. Manual Development Setup
 
-### Prerequisites
+If you prefer manual setup:
 
-- Python 3.14+
-- Node.js & NPM
+```bash
+# Backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+python -m uvicorn backend.main:app --reload
 
-### Local Setup
+# Frontend (separate terminal)
+cd frontend
+npm install
+npm run dev
+```
 
-1. **Clone the Repo**
-2. **Install Backend Dependencies**:
-   ```bash
-   pip install -r backend/requirements.txt
-   ```
-3. **Run the Platform**:
-   ```bash
-   ./run_platform.sh
-   ```
-4. **Access Dashboard**: Open `http://localhost:3000` (after running `npm run dev` in `frontend/`)
+### API Endpoints
+
+| Method | Endpoint                | Description                   |
+| ------ | ----------------------- | ----------------------------- |
+| POST   | `/api/documents/upload` | Upload document for audit     |
+| GET    | `/api/documents`        | List all audited documents    |
+| GET    | `/api/documents/{id}`   | Get detailed audit report     |
+| POST   | `/api/seed-samples`     | Load sample documents         |
+| GET    | `/docs`                 | Interactive API documentation |
+
+---
+
+## 9. Project Structure
+
+```
+Capstone/
+├── backend/                 # FastAPI Microservices
+│   ├── main.py              # REST API endpoints
+│   ├── models.py            # SQLAlchemy models
+│   ├── database.py          # Database configuration
+│   └── services/            # Compliance microservices
+│       ├── document_parser.py
+│       ├── nlp_extractor.py
+│       ├── financial_compliance.py
+│       ├── esg_compliance.py
+│       ├── legal_compliance.py
+│       └── risk_engine.py
+├── frontend/                # Next.js Dashboard
+│   └── pages/index.js       # Main dashboard
+├── serverless/              # AWS SAM Template
+│   ├── template.yaml
+│   └── s3_trigger_handler.py
+├── samples/                 # Test documents
+├── tests/                   # Unit tests (12 passing)
+├── .venv/                   # Auto-created isolated env
+├── setup_and_run.sh         # Linux/macOS launcher
+├── setup_and_run.ps1        # Windows launcher
+├── Dockerfile               # Container support
+├── docker-compose.yml       # Multi-service stack
+└── Makefile                 # Dev commands
+```
+
+---
+
+## 10. License
+
+MIT License - see [LICENSE](LICENSE) for details.
