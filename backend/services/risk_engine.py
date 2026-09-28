@@ -20,9 +20,15 @@ class RiskEngine:
             )
             score = round(min(10.0, raw_sum / max(1, total) * 1.5), 1)
 
-            if score >= 7.0 or critical_count > 0:
+            # Rating logic: Fail only if Critical findings OR score >= 8.0
+            # Conditional if High findings OR score >= 5.0
+            if critical_count > 0:
                 rating = "Fail"
-            elif score >= 4.0 or high_count > 0:
+            elif high_count > 0:
+                rating = "Conditional"
+            elif score >= 8.0:
+                rating = "Fail"
+            elif score >= 5.0:
                 rating = "Conditional"
             else:
                 rating = "Pass"

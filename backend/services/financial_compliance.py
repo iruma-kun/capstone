@@ -40,14 +40,32 @@ class FinancialComplianceService:
             )
 
         # Check 3: Missing Liability Disclosures
-        if "liability" not in text_lower and "debt" not in text_lower:
+        # Look for positive liability mentions (not negated like "no liability" or "no liabilities")
+        # First check if there are any liability-related words
+        liability_mentions = re.findall(r"liabilit(?:y|ies)", text_lower)
+        debt_mentions = re.findall(r"\bdebt\b", text_lower)
+
+        # Check if mentions are negated (e.g., "no liability", "without liability", "zero liability")
+        negated_liability = re.search(
+            r"(?:no|zero|without|absence of|lack of)\s+(?:any\s+)?liabilit(?:y|ies)",
+            text_lower,
+        )
+        negated_debt = re.search(
+            r"(?:no|zero|without|absence of|lack of)\s+(?:any\s+)?debt", text_lower
+        )
+
+        has_positive_liability = (
+            len(liability_mentions) > 0 and not negated_liability
+        ) or (len(debt_mentions) > 0 and not negated_debt)
+
+        if not has_positive_liability:
             findings.append(
                 {
                     "rule_id": "FIN-003",
                     "risk_level": "Critical",
                     "title": "Complete Absence of Liability Disclosures",
                     "description": "No mention of liabilities or debt obligations found in financial filing.",
-                    "evidence": "Document scan yielded zero mentions of liabilities.",
+                    "evidence": "Document scan yielded zero positive mentions of liabilities.",
                     "confidence": 0.95,
                 }
             )

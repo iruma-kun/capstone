@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  compliance-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: compliance-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+      - ./samples:/app/samples
+      - ./compliance_audit.db:/app/compliance_audit.db
+    environment:
+      - DATABASE_URL=sqlite:///./compliance_audit.db
+      - DEBUG=True
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: PostgreSQL for production-like environment
+  # postgres:
+  #   image: postgres:16-alpine
+  #   container_name: compliance-postgres
+  #   environment:
+  #     POSTGRES_USER: compliance
+  #     POSTGRES_PASSWORD: compliance123
+  #     POSTGRES_DB: compliance_audit
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -63,7 +63,9 @@ class NLPExtractor:
                 text,
             ),
             "currency": re.findall(
-                r"\$[0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{2})?|\b[0-9]+ million\b", text
+                r"\$?\b[0-9]+(?:\.[0-9]+)?\s*(?:million|billion|thousand)\b|\$[0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{2})?",
+                text,
+                re.IGNORECASE,
             ),
             "orgs": re.findall(
                 r"\b[A-Z][a-zA-Z0-9&]{2,}(?: Inc\.| Ltd\.| Corp\.| LLC| Group| Co\.)",
