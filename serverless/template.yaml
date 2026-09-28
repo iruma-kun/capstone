@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Cloud-Native Automated Compliance and Audit System
+  Serverless document processing pipeline on AWS S3 and Lambda.
+
+Resources:
+  ComplianceDocumentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "compliance-audit-documents-${AWS::AccountId}"
+      VersioningConfiguration:
+        Status: Enabled
+
+  ComplianceProcessingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/
+      Handler: backend.main.lambda_handler
+      Runtime: python3.14
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Sub "compliance-audit-documents-${AWS::AccountId}"
+        - CloudWatchLogsFullAccess
+      Events:
+        S3UploadEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref ComplianceDocumentBucket
+            Events: s3:ObjectCreated:*
+
+Outputs:
+  ApiURL:
+    Description: "API Gateway endpoint URL for Compliance System"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  BucketName:
+    Description: "S3 Bucket for corporate document uploads"
+    Value: !Ref ComplianceDocumentBucket
