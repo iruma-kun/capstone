@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · Lexflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+</head>
+<body class="login-page">
+  <section class="login-story">
+    <a class="brand brand-light" href="/"><span class="brand-mark">L</span><span>Lexflow</span></a>
+    <div><p class="eyebrow light">LEGAL WORK, IN FLOW</p><h1>Your practice,<br>clearly organized.</h1><p>Keep every matter, deadline, document, and client conversation in one calm workspace.</p></div>
+    <p class="login-quote">“Clarity is the quiet advantage.”</p>
+  </section>
+  <main class="login-panel">
+    <form class="login-form" action="/login" method="post">
+      <div class="mobile-brand"><span class="brand-mark">L</span><strong>Lexflow</strong></div>
+      <p class="eyebrow">WELCOME BACK</p><h2>Sign in to your workspace</h2><p class="muted">Use the demo account to explore the product.</p>
+      {% if error %}<div class="form-error">{{ error }}</div>{% endif %}
+      <label>Email address<input type="email" name="email" value="admin@lexflow.test" required autocomplete="email"></label>
+      <label>Password<input type="password" name="password" value="demo1234" required autocomplete="current-password"></label>
+      <div class="form-row"><label class="check"><input type="checkbox" checked> Remember me</label><a href="#" class="text-link">Forgot password?</a></div>
+      <button class="button primary full" type="submit">Sign in <span>→</span></button>
+      <div class="demo-note"><span>Admin</span> admin@lexflow.test · demo1234<br><span>Agent</span> agent@lexflow.test · demo1234</div>
+    </form>
+  </main>
+</body>
+</html>

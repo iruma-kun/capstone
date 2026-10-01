@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Overview · Lexflow{% endblock %}
+{% block crumb %}Overview{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">DAILY BRIEFING</p><h1>Good morning, {{ user.name.split(' ')[0] }}.</h1><p>Here’s what needs your attention today.</p></div><a href="/app/matters" class="button primary">View matters <span>→</span></a></section>
+<section class="stat-grid">
+  <article class="stat-card"><span class="stat-icon green">▱</span><div><p>Active matters</p><strong>{{ stats.active }}</strong><small>Across the firm</small></div></article>
+  <article class="stat-card"><span class="stat-icon amber">◷</span><div><p>Due this week</p><strong>{{ stats.due }}</strong><small>Deadlines approaching</small></div></article>
+  <article class="stat-card"><span class="stat-icon blue">✓</span><div><p>Open tasks</p><strong>{{ stats.tasks }}</strong><small>Team workload</small></div></article>
+  <article class="stat-card"><span class="stat-icon plum">◎</span><div><p>Active clients</p><strong>{{ stats.clients }}</strong><small>Total relationships</small></div></article>
+</section>
+<section class="dashboard-grid">
+  <article class="panel wide"><header class="panel-head"><div><h2>Recent matters</h2><p>Latest activity across your practice</p></div><a class="text-link" href="/app/matters">View all →</a></header>
+    <div class="table-wrap"><table><thead><tr><th>Matter</th><th>Client</th><th>Status</th><th>Next deadline</th></tr></thead><tbody>{% for matter in matters %}{% include "partials/matter_row_compact.html" %}{% endfor %}</tbody></table></div>
+  </article>
+  <article class="panel"><header class="panel-head"><div><h2>Upcoming</h2><p>Your nearest deadlines</p></div><a class="text-link" href="/app/tasks">All tasks</a></header>
+    <div class="task-list">{% for task in tasks %}{% include "partials/task_card.html" %}{% endfor %}</div>
+  </article>
+</section>
+<section class="insight-card"><div class="insight-mark">✦</div><div><span class="ai-label">LEXFLOW INSIGHT</span><h3>Two deadlines need attention</h3><p>The vendor dispute response is due tomorrow, followed by the Morgan signature packet. Review workload before assigning anything new.</p></div><a href="/app/tasks" class="button subtle">Review tasks</a></section>
+{% endblock %}

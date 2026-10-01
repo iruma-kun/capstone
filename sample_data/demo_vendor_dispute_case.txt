@@ -1,0 +1,83 @@
+LEXFLOW DEMONSTRATION CASE FILE
+
+This document is entirely fictional and is intended only for software demonstration and testing.
+
+Matter reference: MAT-DEMO-2026-001
+Matter type: Commercial contract dispute
+Prepared date: September 30, 2026
+Current status: Pre-litigation review
+
+PARTIES
+
+Client: Northstar Labs Private Limited ("Northstar")
+Counterparty: Meridian Office Systems Limited ("Meridian")
+Northstar contact: Operations Director
+Meridian contact: Account Manager
+
+BACKGROUND
+
+Northstar entered into a twelve-month equipment supply and maintenance agreement with Meridian on January 15, 2026. Meridian agreed to deliver and install forty ergonomic workstations and provide quarterly maintenance services. The total contract price was INR 2,400,000, payable in four equal installments.
+
+The agreement required all forty workstations to be delivered by February 15, 2026. Northstar paid the first installment of INR 600,000 on January 20, 2026. Meridian delivered twenty-eight workstations on February 18, 2026 and delivered the remaining twelve on March 12, 2026.
+
+Northstar reports that eight workstations developed hydraulic faults during April 2026. Northstar sent written notices to Meridian on April 22 and May 6. Meridian repaired three workstations but did not inspect the remaining five.
+
+CONTRACT TERMS
+
+Clause 4.2 requires Meridian to repair or replace defective equipment within ten business days after receiving written notice.
+
+Clause 7.1 permits Northstar to withhold a disputed installment after giving Meridian seven calendar days written notice describing the dispute.
+
+Clause 9.3 requires the parties to attend a good-faith settlement meeting before commencing arbitration.
+
+Clause 11.2 requires any arbitration demand to be filed within one year after the disputed breach became known to the claimant.
+
+Clause 13.1 states that notices must be sent by email and registered post to the addresses listed in the agreement.
+
+CURRENT DISPUTE
+
+Meridian issued an invoice for the third installment of INR 600,000 on August 28, 2026. The invoice states that payment is due on October 5, 2026.
+
+Northstar disputes the invoice because five workstations remain defective and because delivery was completed twenty-five days late. On September 26, 2026, Northstar emailed Meridian stating that it intended to withhold the third installment. The current file does not contain evidence that the notice was also sent by registered post.
+
+Meridian responded on September 28, 2026. It denied responsibility for the remaining faults, alleged misuse by Northstar employees, and demanded full payment by October 5, 2026. Meridian stated that it may suspend all maintenance services if payment is not received.
+
+UPCOMING DATES
+
+October 2, 2026: Internal deadline to collect photographs, repair logs, and employee statements concerning the five defective workstations.
+
+October 5, 2026: Contractual payment deadline for Meridian's third invoice.
+
+October 7, 2026: Proposed date for sending a formal dispute notice by email and registered post.
+
+October 14, 2026: Proposed good-faith settlement meeting with Meridian.
+
+February 18, 2027: Earliest possible one-year arbitration limitation date based on the late initial delivery. Counsel must verify the correct trigger date before relying on this date.
+
+AVAILABLE DOCUMENTS
+
+1. Signed equipment supply and maintenance agreement dated January 15, 2026.
+2. Proof of the first installment payment.
+3. Delivery receipts dated February 18 and March 12, 2026.
+4. Email notices dated April 22, May 6, and September 26, 2026.
+5. Meridian's response dated September 28, 2026.
+6. Photographs of three defective workstations.
+7. Repair records for the three workstations serviced by Meridian.
+
+MISSING OR UNCONFIRMED INFORMATION
+
+1. Registered-post receipt for Northstar's September 26 dispute notice.
+2. Photographs and serial numbers for two of the five workstations that remain defective.
+3. Employee statements describing how the affected workstations were used.
+4. Confirmation that both parties accepted the proposed October 14 settlement meeting.
+5. Technical evidence addressing Meridian's allegation of misuse.
+
+CLIENT OBJECTIVES
+
+Northstar wants all defective workstations repaired or replaced, continuation of maintenance services, and a credit for the delayed delivery. Northstar prefers a negotiated resolution and wants to avoid disruption to its office operations. It is willing to place the disputed installment in escrow while the parties negotiate.
+
+INITIAL REVIEW NOTES
+
+The notice requirement may be an immediate concern because the September 26 email may not satisfy Clause 13.1 without registered post. Suspending payment may also create a counterclaim risk if Northstar did not follow the seven-day notice procedure in Clause 7.1. The alleged misuse is factually disputed and requires technical evidence. The arbitration limitation date should be calculated after counsel determines when each alleged breach became known.
+
+No legal conclusion has been reached. All generated summaries, deadlines, risks, and suggested actions must be reviewed by a qualified legal professional before use.

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ document.name }} · Lexflow{% endblock %}
+{% block crumb %}<a href="/app/documents">Documents</a><span>/</span>Analysis{% endblock %}
+{% block content %}
+<section class="detail-heading">
+  <a class="back-link" href="/app/documents">← All documents</a>
+  <div class="document-hero">
+    <div class="document-identity"><span class="file-icon large-file">{{ document.name.rsplit('.', 1)[-1][:3]|upper }}</span><div><div class="detail-meta"><span>{{ document.category }}</span><span>·</span><span>{{ document.size }}</span></div><h1>{{ document.name }}</h1><p><a class="text-link" href="/app/matters/{{ document.matter.id }}">{{ document.matter.reference }} · {{ document.matter.title }}</a></p></div></div>
+    <div class="document-actions">{% if document.storage_key %}<a class="button ghost" href="/app/documents/{{ document.id }}/download">Download</a>{% endif %}{% if document.storage_key and analysis_supported %}<form action="/app/documents/{{ document.id }}/analyze" method="post"><button class="button primary" type="submit">{{ 'Analyze again' if analysis else 'Analyze with Ollama' }} <span>✦</span></button></form>{% endif %}</div>
+  </div>
+</section>
+
+{% if analysis_error %}<div class="analysis-error"><strong>Analysis could not be completed</strong><span>{{ analysis_error }}</span></div>{% endif %}
+
+{% if not document.storage_key %}
+<section class="panel empty-analysis"><span class="insight-mark">✦</span><h2>No uploaded file is attached</h2><p>This is a demonstration record. Upload a real document to run it through Ollama.</p><a class="button primary" href="/app/documents">Upload document</a></section>
+{% elif not analysis_supported %}
+<section class="panel empty-analysis"><span class="insight-mark">✦</span><h2>This file type needs another extractor</h2><p>Ollama analysis currently supports PDF, DOCX, TXT, RTF, and CSV. Image files require OCR, and legacy DOC/XLS files require conversion.</p></section>
+{% elif not analysis %}
+<section class="panel empty-analysis"><span class="insight-mark">✦</span><h2>Ready for AI review</h2><p>Lexflow will extract the file text and ask {{ ollama_model }} for a grounded summary, parties, deadlines, risks, and proposed tasks.</p><form action="/app/documents/{{ document.id }}/analyze" method="post"><button class="button primary" type="submit">Analyze with Ollama <span>→</span></button></form></section>
+{% else %}
+<section class="analysis-banner"><div><span class="ai-label">OLLAMA ANALYSIS</span><h2>{{ analysis.document_type }}</h2><p>Generated locally with {{ document.ai_model }}{% if document.ai_analyzed_at %} · {{ document.ai_analyzed_at.strftime('%b %d, %Y at %H:%M') }}{% endif %}</p></div><span class="privacy-pill">Local processing</span></section>
+<section class="analysis-layout">
+  <div class="analysis-main">
+    <article class="panel analysis-section"><p class="eyebrow">EXECUTIVE SUMMARY</p><div class="analysis-summary">{{ analysis.summary }}</div></article>
+    <article class="panel analysis-section"><header class="panel-head"><div><h2>Key points</h2><p>Material facts identified in the document</p></div></header><ul class="finding-list">{% for point in analysis.key_points %}<li>{{ point }}</li>{% else %}<li>No key points were returned.</li>{% endfor %}</ul></article>
+    <article class="panel analysis-section"><header class="panel-head"><div><h2>Deadlines</h2><p>Dates that may require action</p></div></header><div class="deadline-list">{% for deadline in analysis.deadlines %}<div><span>{{ deadline.date or 'Date not specified' }}</span><p>{{ deadline.description }}</p></div>{% else %}<p class="muted">No explicit deadlines were identified.</p>{% endfor %}</div></article>
+  </div>
+  <aside class="analysis-side">
+    <article class="panel analysis-section"><h2>Parties</h2><ul class="compact-list">{% for party in analysis.parties %}<li>{{ party }}</li>{% else %}<li>No parties identified.</li>{% endfor %}</ul></article>
+    <article class="panel analysis-section risk-panel"><h2>Review flags</h2><ul class="compact-list">{% for risk in analysis.risks %}<li>{{ risk }}</li>{% else %}<li>No specific risks identified.</li>{% endfor %}</ul></article>
+    <article class="panel analysis-section"><h2>Suggested tasks</h2><p class="section-note">Review before adding these to the matter.</p><ul class="compact-list task-suggestions">{% for task in analysis.suggested_tasks %}<li>{{ task }}</li>{% else %}<li>No tasks suggested.</li>{% endfor %}</ul><a class="button ghost full" href="/app/matters/{{ document.matter.id }}">Open matter</a></article>
+  </aside>
+</section>
+{% endif %}
+{% endblock %}
