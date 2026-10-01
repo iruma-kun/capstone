@@ -1,0 +1,1 @@
+<tr><td><a class="matter-link" href="/app/matters/{{ matter.id }}"><strong>{{ matter.title }}</strong><small>{{ matter.reference }} · {{ matter.practice_area }}</small></a></td><td>{{ matter.client.name }}</td><td>{% include "partials/status_badge.html" %}</td><td>{{ matter.next_deadline.strftime('%b %d, %Y') if matter.next_deadline else '—' }}</td></tr>

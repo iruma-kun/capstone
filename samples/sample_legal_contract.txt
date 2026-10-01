@@ -1,7 +1,0 @@
-MASTER SERVICES AGREEMENT
-
-This Agreement is entered into between Alpha Technologies ("Provider") and Beta Enterprises ("Client") as of October 1, 2026.
-
-1. Scope of Services: Provider shall deliver software development and cloud consulting services as detailed in Statement of Work A.
-2. Confidentiality: Both parties agree to protect confidential information and records shared during the engagement.
-3. Payment Terms: Invoices are net 30 days from issuance. Late payments accrue interest at 1.5% per month.

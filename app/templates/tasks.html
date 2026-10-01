@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ 'My tasks' if user.role == 'Legal agent' else 'Tasks' }} · Lexflow{% endblock %}
+{% block crumb %}{{ 'My tasks' if user.role == 'Legal agent' else 'Tasks' }}{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">{{ 'MY WORK' if user.role == 'Legal agent' else 'WORKLOAD' }}</p><h1>{{ 'My tasks' if user.role == 'Legal agent' else 'Tasks' }}</h1><p>{{ 'Only work assigned to you appears here.' if user.role == 'Legal agent' else 'Stay ahead of every deadline and action item.' }}</p></div>
+  {% if user.role != 'Legal agent' %}<button class="button primary" data-open-dialog="new-task">New task <span>+</span></button>{% endif %}
+</section>
+<section class="panel">
+  <header class="panel-head"><div><h2>{{ 'Assigned to you' if user.role == 'Legal agent' else 'All tasks' }}</h2><p>{{ 'Open an attached file or mark your work complete.' if user.role == 'Legal agent' else 'Complete a task to update the team instantly.' }}</p></div><span class="badge neutral">{{ open_tasks }} open</span></header>
+  <div class="simple-list task-page-list">{% for task in tasks %}{% include "partials/task_row.html" %}{% else %}<div class="empty-state"><strong>No assigned tasks</strong><span>{{ 'Your manager has not assigned any work yet.' if user.role == 'Legal agent' else 'Create one to get started.' }}</span></div>{% endfor %}</div>
+</section>
+{% if user.role != 'Legal agent' %}
+<dialog id="new-task" class="modal"><form method="dialog" class="modal-close"><button aria-label="Close">×</button></form><form action="/app/tasks" method="post" class="modal-form"><p class="eyebrow">ACTION ITEM</p><h2>Create a task</h2><p class="muted">Assign work and optionally attach one matter file.</p><label>Task title<input name="title" required minlength="3" maxlength="180" placeholder="e.g. Review revised agreement"></label><div class="form-grid"><label>Matter<select name="matter_id" required data-task-matter>{% for matter in matters %}<option value="{{ matter.id }}">{{ matter.reference }} · {{ matter.title }}</option>{% endfor %}</select></label><label>Assignee<select name="assignee_id" required>{% for member in users %}<option value="{{ member.id }}" {{ 'selected' if member.id == user.id }}>{{ member.name }} · {{ member.role }}</option>{% endfor %}</select></label><label>Attached file<select name="document_id" data-task-document><option value="">No file attached</option>{% for document in documents %}<option value="{{ document.id }}" data-matter-id="{{ document.matter_id }}">{{ document.matter.reference }} · {{ document.name }}</option>{% endfor %}</select></label><label>Due date<input type="date" name="due_date"></label></div><input type="hidden" name="return_to" value="/app/tasks"><div class="modal-actions"><button type="button" class="button ghost" data-close-dialog="new-task">Cancel</button><button class="button primary" type="submit">Create task</button></div></form></dialog>
+{% endif %}
+{% endblock %}

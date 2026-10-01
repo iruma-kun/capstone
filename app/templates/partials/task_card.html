@@ -1,0 +1,1 @@
+<div class="task-card"><span class="date-tile"><b>{{ task.due_date.strftime('%d') }}</b><small>{{ task.due_date.strftime('%b')|upper }}</small></span><div><strong>{{ task.title }}</strong><a href="/app/matters/{{ task.matter.id }}">{{ task.matter.title }}</a></div></div>

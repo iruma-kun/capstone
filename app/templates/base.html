@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A calm workspace for modern legal teams.">
+  <title>{% block title %}Lexflow{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', path='favicon.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='analysis.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='roles.css') }}">
+  <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+  <script src="{{ url_for('static', path='app.js') }}" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="{{ '/app/tasks' if user.role == 'Legal agent' else '/app' }}" class="brand"><span class="brand-mark">L</span><span>Lexflow</span></a>
+      <nav class="nav" aria-label="Primary navigation">
+        <p class="nav-label">Workspace</p>
+        {% if user.role != 'Legal agent' %}<a href="/app" class="nav-item {{ 'active' if active == 'dashboard' }}"><span class="nav-icon">⌂</span>Overview</a>
+        <a href="/app/matters" class="nav-item {{ 'active' if active == 'matters' }}"><span class="nav-icon">▱</span>Matters</a>{% endif %}
+        <a href="/app/tasks" class="nav-item {{ 'active' if active == 'tasks' }}"><span class="nav-icon">✓</span>Tasks</a>
+        {% if user.role != 'Legal agent' %}<a href="/app/clients" class="nav-item {{ 'active' if active == 'clients' }}"><span class="nav-icon">◎</span>Clients</a>
+        <a href="/app/documents" class="nav-item {{ 'active' if active == 'documents' }}"><span class="nav-icon">□</span>Documents</a>{% endif %}
+      </nav>
+      <div class="sidebar-foot">
+        <div class="user-card">
+          <span class="avatar">{{ user.name[0] }}</span>
+          <span><strong>{{ user.name }}</strong><small>{{ user.role }}</small></span>
+          <form action="/logout" method="post"><button class="icon-button" aria-label="Sign out" title="Sign out">↗</button></form>
+        </div>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-button" data-menu aria-label="Open navigation">☰</button>
+        <div class="crumb">{% block crumb %}Workspace{% endblock %}</div>
+        <div class="top-actions"><button class="icon-button" aria-label="Notifications">○</button><span class="today">{{ today.strftime('%a, %b %d') }}</span></div>
+      </header>
+      <div class="content">{% block content %}{% endblock %}</div>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

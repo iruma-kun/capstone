@@ -1,219 +1,65 @@
-# Cloud-Native Automated Compliance and Audit System (CACA)
+# Lexflow
 
-**Category:** Enterprise Software Engineering & Applied Artificial Intelligence  
-**Project Type:** College Final Year Capstone Project  
-**Status:** Functional Prototype (MVP)
+Lexflow is a focused legal practice workspace built with FastAPI, Jinja2, HTMX, SQLAlchemy, and Pydantic. It turns the supplied legal-practice brief into a small working product: authentication, matter tracking, clients, tasks, documents, deadlines, and a validated REST API.
 
----
-
-## 🚀 Quick Start (Zero-Setup)
-
-### Linux / macOS
-
-```bash
-git clone <your-repo-url>
-cd Capstone
-./setup_and_run.sh
-```
-
-### Windows (PowerShell)
+## Run locally
 
 ```powershell
-git clone <your-repo-url>
-cd Capstone
-.\setup_and_run.ps1
-```
-
-**That's it!** The script automatically:
-
-1. ✅ Creates isolated `.venv` environment
-2. ✅ Installs all Python & Node.js dependencies
-3. ✅ Initializes SQLite database with schema
-4. ✅ Seeds 3 sample compliance documents (Financial, ESG, Legal)
-5. ✅ Starts FastAPI backend at **http://localhost:8000**
-6. ✅ Starts Next.js frontend at **http://localhost:3000**
-7. ✅ Opens API docs at **http://localhost:8000/docs**
-
-Press `Ctrl+C` to stop all services cleanly.
-
----
-
-## 1. Abstract
-
-The **Cloud-Native Automated Compliance and Audit System (CACA)** is an AI-driven platform designed to automate the labor-intensive process of auditing corporate documents. By leveraging Natural Language Processing (NLP) and an event-driven cloud architecture, the system identifies regulatory risks, financial inconsistencies, and ESG (Environmental, Social, and Governance) gaps in real-time. This project demonstrates a scalable approach to "RegTech" (Regulatory Technology) by transforming unstructured data into actionable compliance intelligence.
-
-## 2. Problem Statement
-
-Enterprises spend millions of dollars annually on manual document auditing to ensure compliance with legal, financial, and sustainability standards. Manual audits are:
-
-- **Error-Prone**: Human auditors can overlook critical clauses in 500+ page documents.
-- **Inconsistent**: Different auditors may interpret risks differently.
-- **Slow**: Processing a single corporate report can take days, delaying critical business decisions.
-
-## 3. The Solution
-
-CACA provides a centralized, automated pipeline for document auditing:
-
-1. **Automated Ingestion**: Documents are uploaded to a secure cloud data lake (Amazon S3).
-2. **Multi-Stage Processing**: An event-driven Lambda trigger routes text to specialized NLP microservices.
-3. **Risk Intelligence**: The system analyzes text against Finance, ESG, and Legal rule-sets to flag anomalies.
-4. **Explainable Reporting**: Every finding is backed by "Evidence Excerpts," ensuring transparency for human auditors.
-
----
-
-## 4. System Architecture
-
-```mermaid
-graph TD
-    subgraph "Client Layer"
-        User([Compliance Officer])
-        Dashboard[React/Next.js Dashboard]
-    end
-
-    subgraph "Ingestion Layer (AWS S3 & Lambda)"
-        S3[(Amazon S3 Data Lake)]
-        Lambda[AWS Lambda Trigger]
-    end
-
-    subgraph "Core Intelligence (FastAPI Microservices)"
-        API[API Gateway / Controller]
-        Parser[Text Extraction Engine]
-        NLP[NLP Classification Service]
-        RuleEngine[Compliance Rule Engine]
-    end
-
-    subgraph "Domain Microservices"
-        Finance[Financial Auditor]
-        ESG[ESG Auditor]
-        Legal[Legal Auditor]
-    end
-
-    subgraph "Persistence & Reporting"
-        DB[(PostgreSQL/SQLite)]
-        ReportGen[Audit Report Generator]
-    end
-
-    User -- "1. Upload Doc" --> S3
-    S3 -- "2. Event Trigger" --> Lambda
-    Lambda -- "3. Process" --> API
-    API --> Parser --> NLP --> RuleEngine
-    RuleEngine --> Finance
-    RuleEngine --> ESG
-    RuleEngine --> Legal
-    Finance & ESG & Legal -- "4. Findings" --> ReportGen
-    ReportGen -- "5. Persist" --> DB
-    Dashboard -- "6. View Results" --> API
-```
-
----
-
-## 5. Technical Implementation Details
-
-### **A. Natural Language Processing (NLP)**
-
-- **Rule-Based Extraction**: Uses complex Regex and keyword density analysis to categorize documents and identify standard clauses.
-- **Entity Recognition**: Automatically identifies Organizations, Dates, and Monetary values to correlate financial data.
-- **Classification Engine**: Routes documents to specialized domain-specific auditors (Financial vs. Legal) based on content analysis.
-
-### **B. Backend Microservices**
-
-- **FastAPI**: Used for high-performance, asynchronous API endpoints.
-- **SQLAlchemy (ORM)**: Manages a relational schema tracking Audit Documents, Findings, and Summary Reports.
-- **Risk Scoring Algorithm**: A weighted scoring engine that computes a 0-10 Risk Score based on the severity (Critical/High/Medium/Low) of detected violations.
-
-### **C. Frontend Dashboard**
-
-- **Next.js & Tailwind CSS**: A modern, responsive interface designed for Compliance Officers.
-- **Audit Traceability**: Allows users to "click-to-view" the exact evidence in the source document where a risk was found.
-
----
-
-## 6. Compliance Rules Implemented
-
-| Domain    | Rule ID | Check                            | Severity |
-| --------- | ------- | -------------------------------- | -------- |
-| Financial | FIN-001 | Missing Independent Auditor      | High     |
-| Financial | FIN-002 | Unverified Revenue Projections   | Medium   |
-| Financial | FIN-003 | Missing Liability Disclosures    | Critical |
-| ESG       | ESG-001 | Unverified Net-Zero (No Scope 3) | High     |
-| ESG       | ESG-002 | Vague Environmental Claims       | Medium   |
-| ESG       | ESG-003 | Missing Governance Disclosure    | Low      |
-| Legal     | LEG-001 | Missing Jurisdiction Clause      | Critical |
-| Legal     | LEG-002 | Unlimited Liability              | High     |
-| Legal     | LEG-003 | Missing Data Privacy/GDPR        | Medium   |
-
----
-
-## 7. Future Work & Scalability
-
-- **LLM Integration**: Replacing Regex-based rules with Large Language Models (e.g., GPT-4 or Claude via Amazon Bedrock) for deeper semantic understanding.
-- **OCR (Optical Character Recognition)**: Integrating Amazon Textract to process scanned PDFs and handwritten notes.
-- **Real-time Alerting**: Integrating AWS SNS (Simple Notification Service) to send Slack or Email alerts for 'Critical' compliance failures.
-- **Blockchain for Immutability**: Storing the audit hash on a private ledger to ensure audit trails cannot be tampered with.
-
----
-
-## 8. Manual Development Setup
-
-If you prefer manual setup:
-
-```bash
-# Backend
 python -m venv .venv
-source .venv/bin/activate
-pip install -r backend/requirements.txt
-python -m uvicorn backend.main:app --reload
-
-# Frontend (separate terminal)
-cd frontend
-npm install
-npm run dev
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
 
-### API Endpoints
+Open `http://127.0.0.1:8000` and sign in with:
 
-| Method | Endpoint                | Description                   |
-| ------ | ----------------------- | ----------------------------- |
-| POST   | `/api/documents/upload` | Upload document for audit     |
-| GET    | `/api/documents`        | List all audited documents    |
-| GET    | `/api/documents/{id}`   | Get detailed audit report     |
-| POST   | `/api/seed-samples`     | Load sample documents         |
-| GET    | `/docs`                 | Interactive API documentation |
+- Email: `admin@lexflow.test`
+- Password: `demo1234`
 
----
+Restricted legal-agent demo:
 
-## 9. Project Structure
+- Email: `agent@lexflow.test`
+- Password: `demo1234`
+- Access: assigned tasks and their attached files only
 
-```
-Capstone/
-├── backend/                 # FastAPI Microservices
-│   ├── main.py              # REST API endpoints
-│   ├── models.py            # SQLAlchemy models
-│   ├── database.py          # Database configuration
-│   └── services/            # Compliance microservices
-│       ├── document_parser.py
-│       ├── nlp_extractor.py
-│       ├── financial_compliance.py
-│       ├── esg_compliance.py
-│       ├── legal_compliance.py
-│       └── risk_engine.py
-├── frontend/                # Next.js Dashboard
-│   └── pages/index.js       # Main dashboard
-├── serverless/              # AWS SAM Template
-│   ├── template.yaml
-│   └── s3_trigger_handler.py
-├── samples/                 # Test documents
-├── tests/                   # Unit tests (12 passing)
-├── .venv/                   # Auto-created isolated env
-├── setup_and_run.sh         # Linux/macOS launcher
-├── setup_and_run.ps1        # Windows launcher
-├── Dockerfile               # Container support
-├── docker-compose.yml       # Multi-service stack
-└── Makefile                 # Dev commands
+The checked-in example documents every setting. The local `.env` is ignored by Git and configures Docker Compose to use PostgreSQL and a host-installed Ollama server.
+
+## Run with Docker and Ollama
+
+Start Ollama on Windows and download the configured model once:
+
+```powershell
+ollama serve
+ollama pull llama3.2
 ```
 
----
+In another terminal, start PostgreSQL and the web application:
 
-## 10. License
+```powershell
+docker compose up --build
+```
 
-MIT License - see [LICENSE](LICENSE) for details.
+The web container reads `.env`, connects to PostgreSQL through the Docker service name `db`, applies Alembic migrations, and reaches Ollama on the Windows host through `host.docker.internal:11434`.
+
+To demonstrate the local LLM workflow, upload a PDF, DOCX, TXT, RTF, or CSV from **Documents**, open the uploaded filename, and select **Analyze with Ollama**. Lexflow extracts text locally, requests a structured analysis from the configured Ollama model, validates the response, and stores it with the document.
+
+To run FastAPI directly on Windows instead of Docker, change the hosts in your local `.env` from `db` to `localhost` and from `host.docker.internal` to `localhost`.
+
+## What is included
+
+- Server-rendered dashboard and legal workflows
+- HTMX search, filtering, task updates, and status updates
+- JWT authentication in an HTTP-only cookie
+- Passlib Argon2 password hashing
+- Pydantic request and response validation
+- SQLAlchemy models that support SQLite and PostgreSQL
+- REST endpoints at `/api/v1/matters`
+- Docker Compose configuration with PostgreSQL
+- Authenticated document uploads and downloads with file type and size validation
+- Persistent upload storage through the Docker `uploads_data` volume
+- Task creation from the task workspace or directly inside a matter
+- Ollama-powered case-file analysis for PDF, DOCX, TXT, RTF, and CSV uploads
+- Structured summaries, parties, key points, deadlines, risks, and task suggestions
+- Role-enforced legal-agent workspace limited to assigned tasks and attached files
+
+AI orchestration, semantic search, Drive sync, Redis, and Celery are intentionally left as extension points. They add operational cost and should be introduced only when a real workflow needs them.
